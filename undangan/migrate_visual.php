@@ -23,4 +23,4 @@ foreach ($columns as $col) {
 }
 $db->exec("UPDATE events SET ornament_animation = 'melayang' WHERE ornament_animation IS NULL OR ornament_animation = ''");
 $db->exec("UPDATE events SET font_preset = 'klasik' WHERE font_preset IS NULL OR font_preset = ''");
-echo '</ul><p><a href="<?= app_url('admin/') ?>">Ke Back Office</a></p>';
+echo '</ul><p><a href="' . htmlspecialchars(app_url('admin/')) . '">Ke Back Office</a></p>';

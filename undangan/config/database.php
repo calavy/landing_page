@@ -11,7 +11,9 @@ define('APP_BASE', '/landing page/undangan');
 function app_url(string $path = ''): string
 {
     $path = ltrim(str_replace('\\', '/', $path), '/');
-    return rtrim(APP_BASE, '/') . ($path !== '' ? '/' . $path : '');
+    $url = rtrim(APP_BASE, '/') . ($path !== '' ? '/' . $path : '');
+
+    return str_replace(' ', '%20', $url);
 }
 
 define('BASE_PATH', dirname(__DIR__));

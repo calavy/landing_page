@@ -406,3 +406,24 @@ body {
     .data-table { font-size: .75rem; }
     .data-table th, .data-table td { padding: .5rem; }
 }
+
+.scroll-speed-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.scroll-speed-control input[type="range"] {
+    flex: 1;
+    min-width: 0;
+    accent-color: var(--primary, #064E3B);
+}
+
+.scroll-speed-label {
+    min-width: 11rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary, #064E3B);
+    text-align: right;
+}

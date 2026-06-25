@@ -4,5 +4,6 @@
  */
 declare(strict_types=1);
 
-header('Location: buku-tamu/public/', true, 302);
+require_once __DIR__ . '/buku-tamu/config/paths.php';
+header('Location: ' . buku_tamu_url(), true, 302);
 exit;

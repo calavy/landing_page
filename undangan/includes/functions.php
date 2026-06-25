@@ -264,6 +264,23 @@ function getInvitationBaseUrl(string $slug): string
     return app_url($slug);
 }
 
+/** Label preset kecepatan gulir untuk admin (ms → teks). */
+function scrollSpeedPresetLabel(int $ms): string
+{
+    $seconds = number_format($ms / 1000, 1, ',', '');
+    if ($ms >= 8000) {
+        return "Sangat Lambat ({$seconds} dtk)";
+    }
+    if ($ms >= 4500) {
+        return "Lambat ({$seconds} dtk)";
+    }
+    if ($ms >= 2000) {
+        return "Sedang ({$seconds} dtk)";
+    }
+
+    return "Cepat ({$seconds} dtk)";
+}
+
 function getPersonalizedInvitationUrl(string $slug, string $guestName): string
 {
     return getInvitationBaseUrl($slug) . '?kepada=' . rawurlencode($guestName);

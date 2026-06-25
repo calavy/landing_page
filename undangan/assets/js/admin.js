@@ -186,4 +186,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Slider kecepatan gulir otomatis
+    const scrollSpeedRange = document.getElementById('scroll-speed-range');
+    const scrollSpeedLabel = document.getElementById('scroll-speed-label');
+    if (scrollSpeedRange && scrollSpeedLabel) {
+        const formatScrollSpeedLabel = (ms) => {
+            const seconds = (ms / 1000).toFixed(1).replace('.', ',');
+            if (ms >= 8000) return `Sangat Lambat (${seconds} dtk)`;
+            if (ms >= 4500) return `Lambat (${seconds} dtk)`;
+            if (ms >= 2000) return `Sedang (${seconds} dtk)`;
+            return `Cepat (${seconds} dtk)`;
+        };
+        const updateScrollSpeedLabel = () => {
+            scrollSpeedLabel.textContent = formatScrollSpeedLabel(Number(scrollSpeedRange.value));
+        };
+        scrollSpeedRange.addEventListener('input', updateScrollSpeedLabel);
+        updateScrollSpeedLabel();
+    }
 });

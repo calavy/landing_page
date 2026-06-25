@@ -34,4 +34,4 @@ $demoSchedule = json_encode([
 $stmt = $db->prepare('UPDATE events SET event_schedule = ? WHERE slug = ? AND (event_schedule IS NULL OR event_schedule = ?)');
 $stmt->execute([$demoSchedule, 'haflah-2026', '']);
 echo '<li style="color:green">[ok] Demo susunan acara haflah-2026</li>';
-echo '</ul><p><a href="<?= app_url('admin/') ?>">Ke Back Office</a></p>';
+echo '</ul><p><a href="' . htmlspecialchars(app_url('admin/')) . '">Ke Back Office</a></p>';

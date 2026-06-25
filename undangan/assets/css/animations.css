@@ -268,7 +268,7 @@ body.inv-motion-on .float-particle {
 /* Tombol gulir otomatis */
 .btn-autoscroll {
     position: fixed;
-    bottom: calc(1.25rem + var(--safe-bottom));
+    bottom: calc(1rem + var(--chrome-bottom, env(safe-area-inset-bottom, 0px)));
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;

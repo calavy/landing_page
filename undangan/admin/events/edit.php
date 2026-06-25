@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Edit Undangan';
 $currentPage = 'events';
+$previewUrl = getPersonalizedInvitationUrl((string) $event['slug'], 'Nama Tamu');
 ob_start();
 ?>
 <div class="page-header">
@@ -37,7 +38,7 @@ ob_start();
         <h1>Editor Isi & Visual</h1>
         <p><?= e($event['title']) ?> — <code>/<?= e($event['slug']) ?></code></p>
     </div>
-    <a href="<?= e(getPersonalizedInvitationUrl($event['slug'], 'Nama Tamu')) ?>" target="_blank" class="btn btn-outline">Pratinjau Undangan</a>
+    <a href="<?= e($previewUrl) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Pratinjau Undangan</a>
 </div>
 
 <?php if ($errors): ?>

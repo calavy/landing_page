@@ -37,8 +37,8 @@ $inviteeName   = parseInviteeName();
 $scheduleItems = parseEventSchedule($event['event_schedule'] ?? '');
 $animateOrns   = !isset($event['animated_ornaments']) || !empty($event['animated_ornaments']);
 $autoScroll    = !isset($event['auto_scroll']) || !empty($event['auto_scroll']);
-$scrollInterval = max(2, (int) ($event['scroll_interval'] ?? 5));
-$scrollSpeed    = max(300, min(3000, (int) ($event['scroll_speed'] ?? 800)));
+$scrollInterval = max(2, min(120, (int) ($event['scroll_interval'] ?? 5)));
+$scrollSpeed    = max(500, min(12000, (int) ($event['scroll_speed'] ?? 1500)));
 $scrollSnap    = !isset($event['scroll_snap']) || !empty($event['scroll_snap']);
 $greetingLabel = $event['invitation_greeting'] ?? 'Kepada Yth. Bapak/Ibu/Saudara/i';
 $invPages      = resolveInvitationPages($event['invitation_pages'] ?? '');
@@ -66,8 +66,13 @@ if ($animateOrns) {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, interactive-widget=resizes-content">
     <meta name="theme-color" content="<?= e($colors['primary']) ?>">
+    <meta name="color-scheme" content="dark">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
     <title><?= e($event['title']) ?> — Undangan Digital</title>
     <meta name="description" content="Undangan digital <?= e($event['title']) ?> — <?= e($event['pesantren_name']) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,10 +92,13 @@ if ($animateOrns) {
             --color-accent: <?= e($colors['accent']) ?>;
             --font-title: '<?= e($fontData['font_title']) ?>', serif;
             --font-body: '<?= e($fontData['font_body']) ?>', serif;
+            --inv-vh: 100dvh;
+            --inv-vw: 100vw;
         }
     </style>
 </head>
-<body class="<?= e(implode(' ', $bodyClasses)) ?>" data-global-anim="<?= e($animateOrns ? $defaultAnim : 'none') ?>">
+<body class="<?= e(implode(' ', $bodyClasses)) ?>" data-global-anim="<?= e($animateOrns ? $defaultAnim : 'none') ?>" style="--theme-color: <?= e($colors['primary']) ?>">
+    <div class="inv-device-backdrop" aria-hidden="true"></div>
     <?php /* partikel mengambang dinonaktifkan — hanya ornamen gambar yang bergerak */ ?>
     <?php if (!empty($event['bg_image'])): ?>
     <div class="inv-bg" style="background-image: url('<?= e($event['bg_image']) ?>')"></div>
@@ -130,9 +138,9 @@ if ($animateOrns) {
     </div>
 
     <button id="btn-mute" class="btn-mute hidden" type="button" title="Toggle Musik" aria-label="Toggle musik">🔊</button>
-    <button id="btn-autoscroll" class="btn-autoscroll hidden is-off" type="button" title="Ketuk untuk memulai gulir otomatis" aria-label="Mulai gulir otomatis">
+    <button id="btn-autoscroll" class="btn-autoscroll hidden is-off" type="button" title="Ketuk untuk memulai scrol otomatis" aria-label="Mulai scrol otomatis">
         <span class="btn-autoscroll-icon">▶</span>
-        <span class="btn-autoscroll-label">Gulir</span>
+        <span class="btn-autoscroll-label">Scrol</span>
     </button>
 
     <script>
@@ -148,6 +156,7 @@ if ($animateOrns) {
             appBase: <?= json_encode(APP_BASE) ?>
         };
     </script>
+    <script src="<?= app_url('assets/js/invitation-viewport.js') ?>"></script>
     <script src="<?= app_url('assets/js/audio-synth.js') ?>"></script>
     <script src="<?= app_url('assets/js/invitation-motion.js') ?>"></script>
     <script src="<?= app_url('assets/js/invitation.js') ?>"></script>

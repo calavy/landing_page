@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS events (
   bg_image         TEXT,
   auto_scroll      TINYINT(1) NOT NULL DEFAULT 1,
   scroll_interval  INT NOT NULL DEFAULT 5,
-  scroll_speed     INT NOT NULL DEFAULT 800,
+  scroll_speed     INT NOT NULL DEFAULT 1500,
   scroll_snap      TINYINT(1) NOT NULL DEFAULT 1,
   animated_ornaments TINYINT(1) NOT NULL DEFAULT 1,
   ornament_animation VARCHAR(30) NOT NULL DEFAULT 'melayang',

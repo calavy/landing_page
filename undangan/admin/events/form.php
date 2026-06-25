@@ -51,8 +51,8 @@ function collectEventData(array $post): array
         'status'           => in_array($post['status'] ?? '', ['aktif', 'arsip']) ? $post['status'] : 'aktif',
         'auto_scroll'      => !empty($post['auto_scroll']) ? 1 : 0,
         'animated_ornaments' => !empty($post['animated_ornaments']) ? 1 : 0,
-        'scroll_interval'  => max(2, (int) ($post['scroll_interval'] ?? 5)),
-        'scroll_speed'     => max(300, min(3000, (int) ($post['scroll_speed'] ?? 800))),
+        'scroll_interval'  => max(2, min(120, (int) ($post['scroll_interval'] ?? 5))),
+        'scroll_speed'     => max(500, min(12000, (int) ($post['scroll_speed'] ?? 1500))),
         'scroll_snap'      => !empty($post['scroll_snap']) ? 1 : 0,
         'invitation_pages' => buildInvitationPagesFromPost($post),
         'section_animations' => buildSectionAnimationsFromPost(
@@ -98,7 +98,7 @@ function renderEventForm(array $event = [], string $formAction = '', string $sub
         'ornament_top' => '', 'ornament_divider' => '', 'ornament_bottom' => '', 'bg_image' => '',
         'invitation_greeting' => 'Kepada Yth. Bapak/Ibu/Saudara/i', 'event_schedule' => '',
         'auto_scroll' => 1, 'animated_ornaments' => 1,
-        'scroll_interval' => 5, 'scroll_speed' => 800, 'scroll_snap' => 1,
+        'scroll_interval' => 5, 'scroll_speed' => 1500, 'scroll_snap' => 1,
         'section_animations' => '', 'invitation_pages' => '',
         'audio_mode' => 'synth', 'audio_url' => '', 'seat_capacity' => 500, 'status' => 'aktif',
     ], $event);
@@ -235,21 +235,31 @@ function renderEventForm(array $event = [], string $formAction = '', string $sub
             </div>
 
         <div class="tab-panel <?= $activeTab === 'halaman' ? 'active' : '' ?>" data-tab="halaman">
-            <h3 class="subsection-title">Pengaturan Gulir</h3>
+            <h3 class="subsection-title">Pengaturan Scrol</h3>
             <div class="form-grid">
                 <label class="full checkbox-label">
                     <input type="checkbox" name="auto_scroll" value="1" <?= !empty($event['auto_scroll']) ? 'checked' : '' ?>>
-                    Tampilkan tombol gulir otomatis (tamu tekan sendiri untuk mulai/berhenti)
+                    Tampilkan tombol scrol otomatis (tamu tekan sendiri untuk mulai/berhenti)
                 </label>
                 <label>
                     Lama Tiap Halaman (detik)
-                    <input type="number" name="scroll_interval" value="<?= (int) ($event['scroll_interval'] ?? 5) ?>" min="2" max="60">
-                    <small>Berapa lama undangan berhenti di setiap halaman saat gulir otomatis</small>
+                    <input type="number" name="scroll_interval" value="<?= (int) ($event['scroll_interval'] ?? 5) ?>" min="2" max="120">
+                    <small>Berapa lama undangan berhenti di setiap halaman sebelum scrol ke halaman berikutnya</small>
                 </label>
-                <label>
-                    Kecepatan Transisi Gulir (ms)
-                    <input type="number" name="scroll_speed" value="<?= (int) ($event['scroll_speed'] ?? 800) ?>" min="300" max="3000" step="100">
-                    <small>Angka kecil = gulir cepat, angka besar = gulir halus/lambat</small>
+                <label class="full">
+                    Kecepatan Scrol (transisi antar halaman)
+                    <?php
+                    $scrollSpeed = (int) ($event['scroll_speed'] ?? 1500);
+                    $scrollSpeed = max(500, min(12000, $scrollSpeed));
+                    ?>
+                    <div class="scroll-speed-control">
+                        <input type="range" name="scroll_speed" id="scroll-speed-range"
+                               min="500" max="12000" step="250" value="<?= $scrollSpeed ?>">
+                        <output id="scroll-speed-label" class="scroll-speed-label" for="scroll-speed-range">
+                            <?= e(scrollSpeedPresetLabel($scrollSpeed)) ?>
+                        </output>
+                    </div>
+                    <small>Geser ke kiri = cepat · ke kanan = sangat lambat & halus (500 ms – 12 dtk)</small>
                 </label>
                 <label class="checkbox-label">
                     <input type="checkbox" name="scroll_snap" value="1" <?= !isset($event['scroll_snap']) || !empty($event['scroll_snap']) ? 'checked' : '' ?>>
@@ -426,7 +436,7 @@ function renderEventForm(array $event = [], string $formAction = '', string $sub
             </div>
 
             <h3 class="subsection-title">Animasi Per Tampilan</h3>
-            <p class="field-hint full">Hanya gambar ornamen (atas, pembatas, bawah) yang bergerak. Konten teks dan halaman undangan tetap diam saat gulir otomatis.</p>
+            <p class="field-hint full">Hanya gambar ornamen (atas, pembatas, bawah) yang bergerak. Konten teks dan halaman undangan tetap diam saat scrol otomatis.</p>
             <div class="section-anim-grid full">
                 <div class="section-anim-head">
                     <span>Bagian</span>

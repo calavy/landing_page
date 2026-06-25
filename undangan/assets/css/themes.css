@@ -10,6 +10,8 @@
     background-repeat: no-repeat;
     opacity: 0.25;
     pointer-events: none;
+    /* Isi area notch / punch-hole Android */
+    min-height: var(--inv-vh, 100dvh);
 }
 .inv-bg::after {
     content: '';
@@ -18,7 +20,7 @@
     background: linear-gradient(180deg, var(--color-primary) 0%, transparent 30%, transparent 70%, var(--color-primary) 100%);
 }
 
-.splash, .invitation, .btn-mute { position: relative; z-index: 1; }
+.splash, .invitation, .btn-mute, .btn-autoscroll { z-index: 1; }
 
 /* Default CSS ornaments (when no image uploaded) */
 .ornament-default {
@@ -73,7 +75,8 @@
 }
 
 /* ── Theme: Hijau Emas (default) ── */
-.theme-hijau_emas .splash {
+.theme-hijau_emas .splash,
+.theme-hijau_emas .invitation {
     background: linear-gradient(160deg, var(--color-primary) 0%, #0a3d2e 50%, #052a20 100%);
 }
 .theme-hijau_emas .detail-card,
@@ -84,7 +87,8 @@
 }
 
 /* ── Theme: Biru Perak ── */
-.theme-biru_perak .splash {
+.theme-biru_perak .splash,
+.theme-biru_perak .invitation {
     background: linear-gradient(165deg, #1B3A5F 0%, #0f2847 60%, #0a1a30 100%);
 }
 .theme-biru_perak .detail-card,
@@ -101,7 +105,8 @@
 }
 
 /* ── Theme: Ungu Cream ── */
-.theme-ungu_cream .splash {
+.theme-ungu_cream .splash,
+.theme-ungu_cream .invitation {
     background: linear-gradient(150deg, #4A1942 0%, #3a1234 50%, #2a0d26 100%);
 }
 .theme-ungu_cream .detail-card,
@@ -115,7 +120,8 @@
 .theme-ungu_cream .mukaddimah { color: rgba(245,230,211,.85); }
 
 /* ── Theme: Maroon Emas ── */
-.theme-maroon_emas .splash {
+.theme-maroon_emas .splash,
+.theme-maroon_emas .invitation {
     background: linear-gradient(155deg, #5C1A1A 0%, #3d1111 55%, #2a0b0b 100%);
 }
 .theme-maroon_emas .arabic-quote {
@@ -128,7 +134,8 @@
 }
 
 /* ── Theme: Teal Terracotta ── */
-.theme-teal_terracotta .splash {
+.theme-teal_terracotta .splash,
+.theme-teal_terracotta .invitation {
     background: linear-gradient(160deg, #0D4F4F 0%, #0a3a3a 50%, #062828 100%);
 }
 .theme-teal_terracotta .section-title::after { background: #E07A5F; }
@@ -143,7 +150,8 @@
 }
 
 /* ── Theme: Hitam Emas ── */
-.theme-hitam_emas .splash {
+.theme-hitam_emas .splash,
+.theme-hitam_emas .invitation {
     background: linear-gradient(180deg, #1A1A1A 0%, #0d0d0d 100%);
 }
 .theme-hitam_emas .detail-card,
@@ -160,7 +168,8 @@
 }
 
 /* ── Theme: Custom ── */
-.theme-custom .splash {
+.theme-custom .splash,
+.theme-custom .invitation {
     background: linear-gradient(160deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 70%, black) 100%);
 }
 

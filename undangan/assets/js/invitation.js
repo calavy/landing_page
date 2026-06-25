@@ -10,9 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let audioEl = null;
     let synth = null;
     let isMuted = false;
-    let autoScrollTimer = null;
+    let autoScrollTimeout = null;
     let autoScrollActive = false;
     let currentSectionIndex = 0;
+    let scrollAnimFrame = null;
 
     function startAudio() {
         if (config.audioMode === 'url' && config.audioUrl) {
@@ -42,21 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(scroller.querySelectorAll('.inv-screen'));
     }
 
-    function scrollToSection(index, smooth = true) {
+    function scrollToSection(index, smooth = true, onComplete = null) {
         const sections = getSections();
-        if (!sections.length || !scroller) return;
+        if (!sections.length || !scroller) {
+            onComplete?.();
+            return;
+        }
+
         const i = Math.max(0, Math.min(index, sections.length - 1));
         currentSectionIndex = i;
         const target = sections[i].offsetTop;
 
+        if (scrollAnimFrame) {
+            cancelAnimationFrame(scrollAnimFrame);
+            scrollAnimFrame = null;
+        }
+
         if (!smooth) {
             scroller.scrollTop = target;
+            onComplete?.();
             return;
         }
 
         const start = scroller.scrollTop;
         const distance = target - start;
-        const duration = config.scrollSpeed || 800;
+        const duration = Math.max(500, config.scrollSpeed || 1500);
         const startTime = performance.now();
 
         function step(now) {
@@ -64,9 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = Math.min(elapsed / duration, 1);
             const ease = 0.5 - Math.cos(progress * Math.PI) / 2;
             scroller.scrollTop = start + distance * ease;
-            if (progress < 1) requestAnimationFrame(step);
+            if (progress < 1) {
+                scrollAnimFrame = requestAnimationFrame(step);
+            } else {
+                scrollAnimFrame = null;
+                onComplete?.();
+            }
         }
-        requestAnimationFrame(step);
+        scrollAnimFrame = requestAnimationFrame(step);
     }
 
     function updateAutoScrollButton() {
@@ -78,23 +94,43 @@ document.addEventListener('DOMContentLoaded', () => {
             btnAutoscroll.classList.remove('is-off');
             if (icon) icon.textContent = '⏸';
             if (label) label.textContent = 'Berhenti';
-            btnAutoscroll.title = 'Hentikan gulir otomatis';
+            btnAutoscroll.title = 'Hentikan scrol otomatis';
         } else {
             btnAutoscroll.classList.remove('is-on');
             btnAutoscroll.classList.add('is-off');
             if (icon) icon.textContent = '▶';
-            if (label) label.textContent = 'Gulir';
-            btnAutoscroll.title = 'Mulai gulir otomatis';
+            if (label) label.textContent = 'Scrol';
+            btnAutoscroll.title = 'Mulai scrol otomatis';
         }
     }
 
     function stopAutoScroll() {
         autoScrollActive = false;
-        if (autoScrollTimer) {
-            clearInterval(autoScrollTimer);
-            autoScrollTimer = null;
+        if (autoScrollTimeout) {
+            clearTimeout(autoScrollTimeout);
+            autoScrollTimeout = null;
+        }
+        if (scrollAnimFrame) {
+            cancelAnimationFrame(scrollAnimFrame);
+            scrollAnimFrame = null;
         }
         updateAutoScrollButton();
+    }
+
+    function runAutoScrollStep() {
+        if (!autoScrollActive || !scroller) return;
+
+        const sections = getSections();
+        if (!sections.length) return;
+
+        let next = currentSectionIndex + 1;
+        if (next >= sections.length) next = 0;
+
+        scrollToSection(next, true, () => {
+            if (!autoScrollActive) return;
+            const pause = Math.max(2000, (config.scrollInterval || 5) * 1000);
+            autoScrollTimeout = setTimeout(runAutoScrollStep, pause);
+        });
     }
 
     function startAutoScroll() {
@@ -102,14 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
         autoScrollActive = true;
         updateAutoScrollButton();
 
-        const interval = (config.scrollInterval || 5) * 1000;
-        autoScrollTimer = setInterval(() => {
-            const sections = getSections();
-            if (!sections.length) return;
-            let next = currentSectionIndex + 1;
-            if (next >= sections.length) next = 0;
-            scrollToSection(next);
-        }, interval);
+        const pause = Math.max(2000, (config.scrollInterval || 5) * 1000);
+        autoScrollTimeout = setTimeout(runAutoScrollStep, pause);
     }
 
     function toggleAutoScroll() {

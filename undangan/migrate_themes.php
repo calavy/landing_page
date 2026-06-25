@@ -36,4 +36,4 @@ foreach ($results as [$status, $msg]) {
     $color = $status === 'ok' ? 'green' : ($status === 'skip' ? 'gray' : 'red');
     echo "<li style=\"color:{$color}\">[{$status}] " . htmlspecialchars($msg) . '</li>';
 }
-echo '</ul><p><a href="<?= app_url('admin/') ?>">Ke Back Office</a></p>';
+echo '</ul><p><a href="' . htmlspecialchars(app_url('admin/')) . '">Ke Back Office</a></p>';

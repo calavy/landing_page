@@ -106,7 +106,30 @@ function base_url(string $path = ''): string
             $base = rtrim(rawurldecode($config['base_url'] ?? ''), '/');
         }
     }
-    return $base . $path;
+
+    $url = $base . $path;
+
+    return str_replace(' ', '%20', $url);
+}
+
+/** Path route relatif dari REQUEST_URI (menangani rewrite tanpa /public/). */
+function resolve_request_uri(): string
+{
+    $uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/');
+    $scriptDir = rawurldecode(dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+
+    if ($scriptDir !== '/' && $scriptDir !== '\\' && str_starts_with($uri, $scriptDir)) {
+        $uri = substr($uri, strlen($scriptDir));
+    } elseif (str_ends_with($scriptDir, '/public')) {
+        $parentDir = substr($scriptDir, 0, -strlen('/public'));
+        if ($parentDir !== '' && str_starts_with($uri, $parentDir)) {
+            $uri = substr($uri, strlen($parentDir));
+        }
+    }
+
+    $uri = '/' . trim($uri, '/');
+
+    return $uri === '' ? '/' : $uri;
 }
 
 function redirect(string $path): void

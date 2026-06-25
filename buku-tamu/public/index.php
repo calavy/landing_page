@@ -15,16 +15,7 @@ $appConfig = require __DIR__ . '/../config/app.php';
 date_default_timezone_set($appConfig['timezone']);
 
 $method = $_SERVER['REQUEST_METHOD'];
-$uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/');
-
-$scriptDir = rawurldecode(dirname($_SERVER['SCRIPT_NAME'] ?? ''));
-if ($scriptDir !== '/' && $scriptDir !== '\\' && str_starts_with($uri, $scriptDir)) {
-    $uri = substr($uri, strlen($scriptDir));
-}
-$uri = '/' . trim($uri, '/');
-if ($uri === '/') {
-    $uri = '/';
-}
+$uri = resolve_request_uri();
 
 $visitorModel = new VisitorModel();
 $userModel = new UserModel();
