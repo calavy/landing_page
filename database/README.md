@@ -1,33 +1,38 @@
 # Database — Landing Page, Buku Tamu, Undangan
 
-Proyek ini memakai **3 database MySQL terpisah** di server yang sama (XAMPP lokal atau hosting).
+## Mode hosting (satu database) — **aktif saat ini**
 
-| Aplikasi | Nama database | File konfigurasi |
-|----------|---------------|------------------|
-| Landing page CMS | `landing_page` | [`../config/database.php`](../config/database.php) |
-| Buku Tamu | `buku_tamu` | [`../buku-tamu/config/database.php`](../buku-tamu/config/database.php) |
-| Undangan Digital | `haflah_undangan` | [`../undangan/config/database.php`](../undangan/config/database.php) |
+Semua modul memakai database **`u700125577_santri`**:
 
-Buku Tamu dan Undangan **tidak** disimpan di database `landing_page`.
+| Aplikasi | Database | File config | Tabel khusus |
+|----------|----------|-------------|--------------|
+| Landing page CMS | `u700125577_santri` | [`../config/database.php`](../config/database.php) | `admins`, `site_settings`, … |
+| Buku Tamu | `u700125577_santri` | [`../buku-tamu/config/database.php`](../buku-tamu/config/database.php) | `bt_users`, `visitors`, … |
+| Undangan | `u700125577_santri` | [`../undangan/config/database.php`](../undangan/config/database.php) | `inv_users`, `events`, … |
+
+Tabel `users` dipisah menjadi **`bt_users`** (buku tamu) dan **`inv_users`** (undangan) agar tidak bentrok.
+
+### Import hosting (disarankan)
+
+1. Buka phpMyAdmin → tab **Import**
+2. Pilih [`import_hosting.sql`](import_hosting.sql) → **Go**
 
 ---
 
-## Import database (disarankan)
+## Mode XAMPP lokal (3 database terpisah) — opsional
 
-**Sekali jalan — ketiga database:**
+Untuk development lokal dengan database terpisah:
 
-1. Start **Apache** dan **MySQL** di XAMPP
-2. Buka http://localhost/phpmyadmin
-3. Tab **Import** (tidak perlu pilih database dulu)
-4. Pilih file [`import_semua.sql`](import_semua.sql) → **Go**
+| Aplikasi | Database |
+|----------|----------|
+| Landing page | `landing_page` |
+| Buku Tamu | `buku_tamu` |
+| Undangan | `haflah_undangan` |
 
-Setelah import, di sidebar phpMyAdmin harus muncul:
+Import: [`import_semua.sql`](import_semua.sql)  
+Ubah config ke `root` / password kosong (lihat `database.example.php` di tiap modul).
 
-- `landing_page` — CMS website, settings, galeri, artikel
-- `buku_tamu` — tamu, admin, ndalem, jadwal, WhatsApp
-- `haflah_undangan` — events, RSVP, tema undangan
-
-### Import per aplikasi (opsional)
+---
 
 | File | Database |
 |------|----------|
@@ -63,7 +68,13 @@ C:\xampp\mysql\data\haflah_undangan\
 
 ## Konfigurasi koneksi
 
-### XAMPP lokal (default)
+### Hosting
+
+Semua modul: database **`u700125577_santri`**, user **`u700125577_santri`**.
+
+Import: [`import_hosting.sql`](import_hosting.sql)
+
+### XAMPP lokal (development)
 
 Salin file `database.example.php` → `database.php` di masing-masing folder config, atau sesuaikan manual:
 
@@ -73,24 +84,16 @@ Salin file `database.example.php` → `database.php` di masing-masing folder con
 | Buku Tamu | `127.0.0.1` | `buku_tamu` | `root` | *(kosong)* |
 | Undangan | `localhost` | `haflah_undangan` | `root` | *(kosong)* |
 
-Contoh file: [`../config/database.example.php`](../config/database.example.php)
-
-### Hosting
-
-Sesuaikan ketiga file `database.php` dengan kredensial dari panel hosting (cPanel / hPanel). Biasanya satu user MySQL bisa mengakses beberapa database, atau buat database terpisah per aplikasi.
-
-**Penting:** Jangan commit password production ke Git. Gunakan `database.example.php` sebagai template.
-
 ### Hosting vs lokal (perhatian)
 
 | File | Environment saat ini |
 |------|----------------------|
-| [`../config/database.php`](../config/database.php) | Mengarah ke **hosting** (`u700125577_santri`) — dari commit remote |
-| [`../buku-tamu/config/database.php`](../buku-tamu/config/database.php) | XAMPP: `root` / password kosong |
-| [`../undangan/config/database.php`](../undangan/config/database.php) | XAMPP: `root` / password kosong |
+| Ketiga `config/database.php` | Database **`u700125577_santri`**, user hosting |
 
-Untuk development lokal CMS, salin [`../config/database.example.php`](../config/database.example.php) ke `database.php`.  
-Untuk deploy ke hosting, sesuaikan **ketiga** file `database.php` (atau buat 3 database terpisah di panel hosting).
+Untuk development lokal, salin `database.example.php` → `database.php` di tiap modul (database terpisah + `root`).  
+Untuk deploy hosting, import [`import_hosting.sql`](import_hosting.sql) — config sudah diset ke **`u700125577_santri`**.
+
+**Penting:** Jangan commit password production ke Git. Gunakan `database.example.php` sebagai template.
 
 ---
 

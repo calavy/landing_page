@@ -1,15 +1,13 @@
 <?php
 /**
  * Template konfigurasi database — Undangan Digital
- *
- * Salin bagian DB ke database.php dan sesuaikan environment Anda.
- * APP_BASE sesuaikan dengan path folder undangan di server.
+ * Database sama dengan CMS hosting: u700125577_santri
+ * Tabel user: inv_users
  */
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'haflah_undangan');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'u700125577_santri');
+define('DB_USER', 'u700125577_santri');
+define('DB_PASS', 'Landingpage@1990');
 define('DB_CHARSET', 'utf8mb4');
 
-// Path web ke folder undangan (spasi → %20 di URL otomatis via app_url)
 define('APP_BASE', '/landing page/undangan');
