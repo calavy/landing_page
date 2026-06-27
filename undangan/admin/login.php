@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — Haflah Undangan</title>
-    <link rel="stylesheet" href="<?= app_url('assets/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= function_exists('undangan_asset_url') ? undangan_asset_url('assets/css/admin.css') : '../assets/css/admin.css' ?>">
 </head>
 <body class="login-page">
     <div class="login-card">

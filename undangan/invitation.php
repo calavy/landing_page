@@ -80,9 +80,9 @@ if ($animateOrns) {
     <?php if (!empty($fontData['google_url'])): ?>
     <link href="<?= e($fontData['google_url']) ?>" rel="stylesheet">
     <?php endif; ?>
-    <link rel="stylesheet" href="<?= app_url('assets/css/invitation.css') ?>">
-    <link rel="stylesheet" href="<?= app_url('assets/css/themes.css') ?>">
-    <link rel="stylesheet" href="<?= app_url('assets/css/animations.css') ?>">
+    <link rel="stylesheet" href="<?= undangan_asset_url('assets/css/invitation.css') ?>">
+    <link rel="stylesheet" href="<?= undangan_asset_url('assets/css/themes.css') ?>">
+    <link rel="stylesheet" href="<?= undangan_asset_url('assets/css/animations.css') ?>">
     <style>
         <?php if (!empty($fontData['custom_css'])): ?>
         <?= $fontData['custom_css'] ?>
@@ -157,9 +157,9 @@ if ($animateOrns) {
             apiUrl: <?= json_encode(app_url('api/rsvp.php')) ?>
         };
     </script>
-    <script src="<?= app_url('assets/js/invitation-viewport.js') ?>"></script>
-    <script src="<?= app_url('assets/js/audio-synth.js') ?>"></script>
-    <script src="<?= app_url('assets/js/invitation-motion.js') ?>"></script>
-    <script src="<?= app_url('assets/js/invitation.js') ?>"></script>
+    <script src="<?= undangan_asset_url('assets/js/invitation-viewport.js') ?>"></script>
+    <script src="<?= undangan_asset_url('assets/js/audio-synth.js') ?>"></script>
+    <script src="<?= undangan_asset_url('assets/js/invitation-motion.js') ?>"></script>
+    <script src="<?= undangan_asset_url('assets/js/invitation.js') ?>"></script>
 </body>
 </html>

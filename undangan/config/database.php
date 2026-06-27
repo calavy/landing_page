@@ -26,6 +26,20 @@ function detectUndanganBase(): string
         }
     }
 
+    $script = rawurldecode(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? ''));
+    if (preg_match('#(/undangan)(?:/|$)#', $script, $m)) {
+        return $m[1];
+    }
+
+    $uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '');
+    if (preg_match('#(/undangan)(?:/|$)#', $uri, $m)) {
+        return $m[1];
+    }
+
+    if (preg_match('#(/landing page/undangan)(?:/|$)#', $script, $m)) {
+        return $m[1];
+    }
+
     $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
     $moduleRoot = rtrim(str_replace('\\', '/', dirname(__DIR__)), '/');
 
@@ -50,6 +64,35 @@ function detectUndanganBase(): string
 
 if (!defined('APP_BASE')) {
     define('APP_BASE', detectUndanganBase());
+}
+
+/**
+ * URL ke file statis (CSS/JS) — relatif dari halaman aktif agar tetap benar di hosting.
+ */
+function undangan_asset_url(string $path): string
+{
+    $path = ltrim(str_replace('\\', '/', $path), '/');
+    $script = rawurldecode(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php'));
+    $dir = trim(dirname($script), '/');
+
+    if ($dir === '' || $dir === '.') {
+        return $path;
+    }
+
+    $parts = explode('/', $dir);
+    $uIdx = array_search('undangan', $parts, true);
+
+    if ($uIdx !== false) {
+        $depth = count($parts) - $uIdx - 1;
+
+        return ($depth > 0 ? str_repeat('../', $depth) : '') . $path;
+    }
+
+    if (isset($parts[0]) && in_array($parts[0], ['admin', 'api'], true)) {
+        return str_repeat('../', count($parts)) . $path;
+    }
+
+    return app_url($path);
 }
 
 function app_url(string $path = ''): string

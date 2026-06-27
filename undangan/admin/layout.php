@@ -11,7 +11,7 @@ $currentPage = $currentPage ?? 'dashboard';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle ?? 'Back Office') ?> — Haflah Undangan</title>
-    <link rel="stylesheet" href="<?= app_url('assets/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= undangan_asset_url('assets/css/admin.css') ?>">
 </head>
 <body>
     <div class="admin-layout">
@@ -49,6 +49,6 @@ $currentPage = $currentPage ?? 'dashboard';
             <?= $content ?? '' ?>
         </main>
     </div>
-    <script src="<?= app_url('assets/js/admin.js') ?>"></script>
+    <script src="<?= undangan_asset_url('assets/js/admin.js') ?>"></script>
 </body>
 </html>
