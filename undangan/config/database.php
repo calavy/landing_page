@@ -6,7 +6,41 @@ define('DB_USER', 'u700125577_santri');
 define('DB_PASS', 'Landingpage@1990');
 define('DB_CHARSET', 'utf8mb4');
 
-define('APP_BASE', '/landing page/undangan');
+/**
+ * Deteksi path web ke folder undangan dari URL request.
+ * Override manual: buat config/app.php dengan key base_url.
+ */
+function detectUndanganBase(): string
+{
+    static $base = null;
+    if ($base !== null) {
+        return $base;
+    }
+
+    $overrideFile = __DIR__ . '/app.php';
+    if (is_file($overrideFile)) {
+        $cfg = require $overrideFile;
+        if (!empty($cfg['base_url'])) {
+            $base = rtrim(str_replace('\\', '/', (string) $cfg['base_url']), '/');
+            return $base;
+        }
+    }
+
+    $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
+    $dir = dirname($script);
+    $leaf = basename($dir);
+
+    if ($leaf === 'admin' || $leaf === 'api') {
+        $dir = dirname($dir);
+    }
+
+    $base = ($dir === '/' || $dir === '.' || $dir === '\\') ? '' : rtrim($dir, '/');
+    return $base;
+}
+
+if (!defined('APP_BASE')) {
+    define('APP_BASE', detectUndanganBase());
+}
 
 function app_url(string $path = ''): string
 {
@@ -18,14 +52,14 @@ function app_url(string $path = ''): string
 
 define('BASE_PATH', dirname(__DIR__));
 define('UPLOAD_DIR', BASE_PATH . '/assets/uploads/logos/');
-define('UPLOAD_URL', APP_BASE . '/assets/uploads/logos/');
+define('UPLOAD_URL', 'assets/uploads/logos/');
 define('ORNAMENT_UPLOAD_DIR', BASE_PATH . '/assets/uploads/ornaments/');
-define('ORNAMENT_UPLOAD_URL', APP_BASE . '/assets/uploads/ornaments/');
+define('ORNAMENT_UPLOAD_URL', 'assets/uploads/ornaments/');
 define('FONT_UPLOAD_DIR', BASE_PATH . '/assets/uploads/fonts/');
-define('FONT_UPLOAD_URL', APP_BASE . '/assets/uploads/fonts/');
-define('MAX_LOGO_SIZE', 1048576); // 1 MB
-define('MAX_ORNAMENT_SIZE', 2097152); // 2 MB
-define('MAX_FONT_SIZE', 3145728); // 3 MB
+define('FONT_UPLOAD_URL', 'assets/uploads/fonts/');
+define('MAX_LOGO_SIZE', 1048576);
+define('MAX_ORNAMENT_SIZE', 2097152);
+define('MAX_FONT_SIZE', 3145728);
 define('ALLOWED_LOGO_TYPES', ['image/png', 'image/jpeg', 'image/jpg']);
 define('ALLOWED_LOGO_EXT', ['png', 'jpg', 'jpeg']);
 define('ALLOWED_FONT_EXT', ['woff2', 'woff', 'ttf']);

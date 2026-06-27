@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         msgEl?.classList.add('hidden');
 
         try {
-            const res = await fetch((window.INVITATION_CONFIG?.appBase || '') + '/api/rsvp.php', {
+            const res = await fetch(config.apiUrl || ((config.appBase || '') + '/api/rsvp.php'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(Object.fromEntries(new FormData(form))),

@@ -1,10 +1,11 @@
 -- Buku Tamu Online - Database Schema
 -- Import via phpMyAdmin atau: mysql -u root < database/schema.sql
+-- Tabel user: bt_users (sesuai kode aplikasi)
 
 CREATE DATABASE IF NOT EXISTS buku_tamu CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE buku_tamu;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS bt_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -19,7 +20,7 @@ CREATE TABLE IF NOT EXISTS pengasuh_status (
     message VARCHAR(255) DEFAULT NULL,
     updated_by INT DEFAULT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (updated_by) REFERENCES bt_users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS visitors (
@@ -51,7 +52,7 @@ CREATE TABLE IF NOT EXISTS visitors (
     INDEX idx_status (status),
     INDEX idx_created (created_at),
     INDEX idx_tujuan (tujuan_kunjungan),
-    FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (approved_by) REFERENCES bt_users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS whatsapp_logs (
@@ -85,15 +86,15 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 
 -- Default admin & ndalem (password: admin123 / ndalem123)
-INSERT INTO users (username, password, name, role) VALUES
+INSERT INTO bt_users (username, password, name, role) VALUES
 ('admin', '$2y$10$Y7Pv5Pv3tdjiFxtyEJXCR.YGQEsL4RQJPw7oXry360RzwvZzqstru', 'Petugas Keamanan', 'admin'),
 ('ndalem', '$2y$10$AXmi2nh7fUSamKu3uYR7Pu5PwBSkLcxHGhYYzUOXephWJ4bP8oo0S', 'Asisten Pengasuh', 'ndalem');
 
 INSERT INTO pengasuh_status (status, message) VALUES ('available', 'Pengasuh sedang luang dan menerima tamu.');
 
 INSERT INTO settings (setting_key, setting_value) VALUES
-('pesantren_name', 'Pesantren Al-Hikmah'),
-('pesantren_address', 'Jl. Pesantren No. 1'),
+('pesantren_name', 'A.P.I Nailul Muna'),
+('pesantren_address', 'Jl. Pesantren No. 1, Desa Muna, Kecamatan Ilmu, Jawa Timur'),
 ('whatsapp_provider', 'fonnte'),
 ('whatsapp_token', ''),
 ('whatsapp_enabled', '0'),

@@ -1,5 +1,6 @@
 -- Haflah Multi-Event Undangan Digital
--- Jalankan via phpMyAdmin atau: mysql -u root < database/schema.sql
+-- Import via phpMyAdmin atau: mysql -u root < database/schema.sql
+-- Tabel user: inv_users (sesuai kode aplikasi)
 
 CREATE DATABASE IF NOT EXISTS haflah_undangan
   CHARACTER SET utf8mb4
@@ -7,7 +8,7 @@ CREATE DATABASE IF NOT EXISTS haflah_undangan
 
 USE haflah_undangan;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS inv_users (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   username      VARCHAR(50)  NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS guestbook_rsvp (
 ) ENGINE=InnoDB;
 
 -- Akun default: admin / admin123 (ganti setelah login pertama)
-INSERT INTO users (username, password_hash, role) VALUES
+INSERT INTO inv_users (username, password_hash, role) VALUES
   ('admin', '$2y$10$iYpoy8ff1yiAyROJP1PR.OxqWHeA02BtZlCGK5LOzJzK5XXjAYgkG', 'super_admin');
 
 -- Contoh undangan demo
@@ -88,11 +89,14 @@ INSERT INTO events (
   location_name, location_address, maps_url,
   speaker_name, speaker_origin,
   dresscode_pria, dresscode_wanita, special_rules,
-  color_primary, color_accent, audio_mode, status
+  event_schedule,
+  color_primary, color_accent, theme_preset, font_preset,
+  auto_scroll, scroll_interval, scroll_speed, scroll_snap,
+  animated_ornaments, ornament_animation, audio_mode, status
 ) VALUES (
   'haflah-2026',
   'Haflah Akhirussanah 2026',
-  'Pondok Pesantren Al-Ikhlas',
+  'A.P.I Nailul Muna',
   'Menjadi Generasi Qur''ani yang Berakhlak Mulia',
   'Dengan memohon rahmat dan ridha Allah Subhanahu wa Ta''ala, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara Haflah Akhirussanah tahun ajaran 2025/2026.',
   'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
@@ -101,12 +105,15 @@ INSERT INTO events (
   '08.00 WIB – selesai',
   '2026-06-15 08:00:00',
   'Aula Utama Pesantren',
-  'Jl. Pesantren No. 1, Kecamatan Sukamaju, Jawa Barat',
+  'Jl. Pesantren No. 1, Desa Muna, Kecamatan Ilmu, Jawa Timur',
   'https://maps.google.com',
-  'KH. Ahmad Fauzi, Lc.',
-  'Pondok Pesantren Al-Ikhlas',
+  'K.H. Ahmad Nailul Muna',
+  'A.P.I Nailul Muna',
   'Baju koko/sarung batik, peci hitam',
   'Gamis/kerudung syar''i, warna sopan',
   'Mohon datang tepat waktu. Anak-anak di bawah 5 tahun tidak diperkenankan masuk aula utama.',
-  '#064E3B', '#D4AF37', 'synth', 'aktif'
+  '[{"time":"07.30","title":"Registrasi Tamu","desc":"Pendataan tamu di lobby aula utama"},{"time":"08.00","title":"Pembukaan","desc":"Pembacaan ayat suci Al-Qur''an dan sambutan"},{"time":"08.30","title":"Sambutan Pengasuh","desc":"Sambutan dan laporan kegiatan pesantren"},{"time":"09.30","title":"Pembagian Piagam","desc":"Penyerahan piagam kepada santri berprestasi"},{"time":"10.30","title":"Penutup","desc":"Doa bersama dan dokumentasi"}]',
+  '#064E3B', '#D4AF37', 'hijau_emas', 'klasik',
+  1, 5, 1500, 1,
+  1, 'melayang', 'synth', 'aktif'
 );

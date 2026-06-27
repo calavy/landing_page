@@ -28,6 +28,7 @@ function getInvitationSections(): array
 
 function renderOrnament(?string $url, string $type, string $alt = 'Ornamen', bool $animated = true): void
 {
+    $url = resolveAssetUrl($url);
     $animClass = $animated ? ' ornament-moving' : '';
     if ($url) {
         echo '<img src="' . e($url) . '" alt="' . e($alt) . '" class="ornament-img ornament-' . e($type) . $animClass . '" loading="lazy">';
@@ -38,6 +39,7 @@ function renderOrnament(?string $url, string $type, string $alt = 'Ornamen', boo
 
 function renderDivider(?string $url, bool $animated = true): void
 {
+    $url = resolveAssetUrl($url);
     $animClass = $animated ? ' ornament-moving' : '';
     echo '<div class="section-divider">';
     if ($url) {

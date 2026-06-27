@@ -101,7 +101,7 @@ if ($animateOrns) {
     <div class="inv-device-backdrop" aria-hidden="true"></div>
     <?php /* partikel mengambang dinonaktifkan — hanya ornamen gambar yang bergerak */ ?>
     <?php if (!empty($event['bg_image'])): ?>
-    <div class="inv-bg" style="background-image: url('<?= e($event['bg_image']) ?>')"></div>
+    <div class="inv-bg" style="background-image: url('<?= e(resolveAssetUrl($event['bg_image'])) ?>')"></div>
   <?php endif; ?>
 
     <!-- Splash Screen -->
@@ -117,7 +117,7 @@ if ($animateOrns) {
             <?php endif; ?>
 
             <?php if ($event['logo_pesantren']): ?>
-                <img src="<?= e($event['logo_pesantren']) ?>" alt="Logo" class="splash-logo">
+                <img src="<?= e(resolveAssetUrl($event['logo_pesantren'])) ?>" alt="Logo" class="splash-logo">
             <?php endif; ?>
             <p class="splash-pesantren"><?= e($event['pesantren_name']) ?></p>
             <h1 class="splash-title"><?= e($event['title']) ?></h1>
@@ -153,7 +153,8 @@ if ($animateOrns) {
             scrollSnap: <?= $scrollSnap ? 'true' : 'false' ?>,
             motionEnabled: <?= $animateOrns ? 'true' : 'false' ?>,
             inviteeName: <?= json_encode($inviteeName) ?>,
-            appBase: <?= json_encode(APP_BASE) ?>
+            appBase: <?= json_encode(APP_BASE) ?>,
+            apiUrl: <?= json_encode(app_url('api/rsvp.php')) ?>
         };
     </script>
     <script src="<?= app_url('assets/js/invitation-viewport.js') ?>"></script>

@@ -37,8 +37,10 @@ Ubah config ke `root` / password kosong (lihat `database.example.php` di tiap mo
 | File | Database |
 |------|----------|
 | [`landing_page_import.sql`](landing_page_import.sql) | `landing_page` saja |
-| [`buku_tamu_import.sql`](buku_tamu_import.sql) | `buku_tamu` saja |
-| [`haflah_undangan_import.sql`](haflah_undangan_import.sql) | `haflah_undangan` saja |
+| [`buku_tamu_import.sql`](buku_tamu_import.sql) | `buku_tamu` saja (XAMPP lokal) |
+| [`buku_tamu_import_hosting.sql`](buku_tamu_import_hosting.sql) | Buku Tamu saja ke `u700125577_santri` (hosting) |
+| [`haflah_undangan_import.sql`](haflah_undangan_import.sql) | `haflah_undangan` saja (XAMPP lokal) |
+| [`undangan_import_hosting.sql`](undangan_import_hosting.sql) | Undangan saja ke `u700125577_santri` (hosting) |
 
 Schema asli tiap modul juga ada di:
 

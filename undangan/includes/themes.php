@@ -160,8 +160,8 @@ function resolveEventFonts(array $event): array
     ];
 
     if ($fontPreset === 'custom') {
-        $titleUrl = $event['font_custom_title'] ?? '';
-        $bodyUrl  = $event['font_custom_body'] ?? '';
+        $titleUrl = resolveAssetUrl($event['font_custom_title'] ?? '');
+        $bodyUrl  = resolveAssetUrl($event['font_custom_body'] ?? '');
         $css      = '';
 
         if ($titleUrl) {

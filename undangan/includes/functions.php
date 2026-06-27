@@ -82,7 +82,38 @@ function saveImageUpload(array $file, string $prefix, string $dir, string $urlBa
         return null;
     }
 
-    return $urlBase . $filename;
+    return rtrim($urlBase, '/') . '/' . $filename;
+}
+
+/** Normalisasi URL upload agar tetap benar setelah deploy / ganti base path. */
+function resolveAssetUrl(?string $url): string
+{
+    if ($url === null || $url === '') {
+        return '';
+    }
+
+    if (preg_match('#^https?://#i', $url)) {
+        return $url;
+    }
+
+    $url = str_replace('\\', '/', $url);
+
+    if (defined('APP_BASE') && APP_BASE !== '' && str_starts_with($url, APP_BASE)) {
+        $url = ltrim(substr($url, strlen(APP_BASE)), '/');
+    }
+
+    if (preg_match('#assets/uploads/(?:logos|ornaments|fonts)/[^/?#]+$#', $url)) {
+        if (!str_starts_with($url, 'assets/')) {
+            $url = preg_replace('#^.*?assets/uploads/#', 'assets/uploads/', $url);
+        }
+        return app_url($url);
+    }
+
+    if (str_starts_with($url, 'assets/')) {
+        return app_url($url);
+    }
+
+    return app_url(ltrim($url, '/'));
 }
 
 function saveOrnamentUpload(array $file, string $prefix): ?string
@@ -120,7 +151,7 @@ function saveFontUpload(array $file, string $prefix): ?string
     if (!move_uploaded_file($file['tmp_name'], $dest)) {
         return null;
     }
-    return FONT_UPLOAD_URL . $filename;
+    return rtrim(FONT_UPLOAD_URL, '/') . '/' . $filename;
 }
 
 function getEventById(int $id): ?array

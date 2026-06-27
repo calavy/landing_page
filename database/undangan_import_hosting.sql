@@ -1,23 +1,19 @@
--- Undangan Digital — import XAMPP lokal (database terpisah)
--- Database: haflah_undangan | Tabel user: inv_users
+-- Undangan Digital — import ke database hosting
+-- Database: u700125577_santri (satu DB bersama landing page & buku tamu)
+-- Tabel user: inv_users (bukan users, agar tidak bentrok dengan modul lain)
 --
--- Cara import: phpMyAdmin → Import → file ini → Go
+-- Cara import: phpMyAdmin → pilih u700125577_santri → Import → file ini → Go
 -- Login default: admin / admin123
--- URL demo: http://localhost/landing%20page/undangan/haflah-2026
+-- URL demo: .../undangan/haflah-2026
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE DATABASE IF NOT EXISTS `haflah_undangan`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE `haflah_undangan`;
+USE `u700125577_santri`;
 
 DROP TABLE IF EXISTS `guestbook_rsvp`;
 DROP TABLE IF EXISTS `events`;
 DROP TABLE IF EXISTS `inv_users`;
-DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `inv_users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,

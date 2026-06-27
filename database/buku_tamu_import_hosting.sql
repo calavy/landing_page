@@ -1,17 +1,14 @@
--- Buku Tamu Digital — import XAMPP lokal (database terpisah)
--- Database: buku_tamu | Tabel user: bt_users
+-- Buku Tamu Digital — import ke database hosting
+-- Database: u700125577_santri (satu DB bersama landing page & undangan)
+-- Tabel user: bt_users (bukan users, agar tidak bentrok dengan modul lain)
 --
--- Cara import: phpMyAdmin → Import → file ini → Go
+-- Cara import: phpMyAdmin → pilih u700125577_santri → Import → file ini → Go
 -- Login default: admin / admin123 | ndalem / ndalem123
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE DATABASE IF NOT EXISTS `buku_tamu`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE `buku_tamu`;
+USE `u700125577_santri`;
 
 DROP TABLE IF EXISTS `whatsapp_logs`;
 DROP TABLE IF EXISTS `visitors`;
@@ -19,7 +16,6 @@ DROP TABLE IF EXISTS `jadwal_terima_tamu`;
 DROP TABLE IF EXISTS `pengasuh_status`;
 DROP TABLE IF EXISTS `settings`;
 DROP TABLE IF EXISTS `bt_users`;
-DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `bt_users` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,

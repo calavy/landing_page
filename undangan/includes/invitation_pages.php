@@ -253,11 +253,11 @@ function renderPageHeader(array $page, array $ctx, bool $isLast): void
                 </div>
                 <?php endif; ?>
                 <?php if ($event['logo_pesantren']): ?>
-                    <img src="<?= e($event['logo_pesantren']) ?>" alt="Logo Pesantren" class="inv-logo">
+                    <img src="<?= e(resolveAssetUrl($event['logo_pesantren'])) ?>" alt="Logo Pesantren" class="inv-logo">
                 <?php endif; ?>
                 <p class="inv-pesantren"><?= e($event['pesantren_name']) ?></p>
                 <?php if ($event['logo_haflah']): ?>
-                    <img src="<?= e($event['logo_haflah']) ?>" alt="Logo Haflah" class="inv-logo-haflah">
+                    <img src="<?= e(resolveAssetUrl($event['logo_haflah'])) ?>" alt="Logo Haflah" class="inv-logo-haflah">
                 <?php endif; ?>
                 <h1 class="inv-title"><?= e($event['title']) ?></h1>
                 <?php if ($event['theme_statement']): ?>

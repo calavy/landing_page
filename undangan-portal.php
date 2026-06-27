@@ -4,5 +4,7 @@
  */
 declare(strict_types=1);
 
-header('Location: undangan/admin/login.php', true, 302);
+require_once __DIR__ . '/includes/helpers.php';
+
+header('Location: ' . public_url('undangan/admin/login.php'), true, 302);
 exit;
