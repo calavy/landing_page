@@ -7,8 +7,8 @@ define('DB_PASS', 'Landingpage@1990');
 define('DB_CHARSET', 'utf8mb4');
 
 /**
- * Deteksi path web ke folder undangan dari URL request.
- * Override manual: buat config/app.php dengan key base_url.
+ * Deteksi path web ke folder undangan.
+ * Prioritas: config/app.php → DOCUMENT_ROOT + folder modul → SCRIPT_NAME.
  */
 function detectUndanganBase(): string
 {
@@ -24,6 +24,16 @@ function detectUndanganBase(): string
             $base = rtrim(str_replace('\\', '/', (string) $cfg['base_url']), '/');
             return $base;
         }
+    }
+
+    $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+    $moduleRoot = rtrim(str_replace('\\', '/', dirname(__DIR__)), '/');
+
+    if ($docRoot !== '' && str_starts_with($moduleRoot, $docRoot)) {
+        $relative = substr($moduleRoot, strlen($docRoot));
+        $relative = $relative === false ? '' : str_replace('\\', '/', $relative);
+        $base = rtrim($relative, '/');
+        return $base;
     }
 
     $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
@@ -45,7 +55,13 @@ if (!defined('APP_BASE')) {
 function app_url(string $path = ''): string
 {
     $path = ltrim(str_replace('\\', '/', $path), '/');
-    $url = rtrim(APP_BASE, '/') . ($path !== '' ? '/' . $path : '');
+    $base = rtrim(APP_BASE, '/');
+
+    if ($base === '') {
+        $url = $path === '' ? '/' : '/' . $path;
+    } else {
+        $url = $path === '' ? $base : $base . '/' . $path;
+    }
 
     return str_replace(' ', '%20', $url);
 }

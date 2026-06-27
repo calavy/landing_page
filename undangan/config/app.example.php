@@ -2,8 +2,11 @@
 
 /**
  * Override path undangan (opsional).
- * Salin ke app.php jika deteksi otomatis tidak tepat di hosting.
+ * Salin ke app.php hanya jika deteksi otomatis tidak tepat.
+ *
+ * Contoh hosting nailulmuna.id:
+ *   'base_url' => '/undangan',
  */
 return [
-    // 'base_url' => '/landing page/undangan',
+    // 'base_url' => '/undangan',
 ];
