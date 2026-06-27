@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/asset_path.php';
 require_once __DIR__ . '/functions.php';
 
 function startSession(): void
@@ -18,7 +19,7 @@ function isLoggedIn(): bool
 function requireLogin(): void
 {
     if (!isLoggedIn()) {
-        header('Location: ' . app_url('admin/login.php'));
+        header('Location: ' . undangan_url('admin/login.php'));
         exit;
     }
 }
